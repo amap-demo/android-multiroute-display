@@ -1,5 +1,5 @@
 # android-navi-multiroute-display
-多路径规划、导航解决方案
+多路径规划、导航示例
 ## 前述 ##
 - [高德官网申请Key](http://lbs.amap.com/dev/#/).
 - 阅读[参考手册](http://a.amap.com/lbs/static/unzip/Android_Map_Doc/index.html).
@@ -11,7 +11,7 @@
 ![Screenshot]( https://github.com/amap-demo/android-navi-multiroute-display/raw/master/resource/download.png )
 
 
-##多路径规划、导航解决方案
+##多路径规划、导航示例
 ## 使用方法##
 ###1:配置搭建AndroidSDK工程###
 - [Android Studio工程搭建方法](http://lbs.amap.com/api/android-sdk/guide/creat-project/android-studio-creat-project/#add-jars).
