@@ -44,6 +44,8 @@ dependencies {
     compile fileTree(dir: 'libs', include: '*.jar')
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:appcompat-v7:23.2.1'
-    //compile 'com.amap.api:navi-solo:1.9.0'
-    //compile 'com.amap.api:navi-solo-native:1.9.0'
+    compile 'com.amap.api:navi-solo:latest.integration'
+    compile 'com.amap.api:navi-solo-native:latest.integration'
+    compile 'com.amap.api:map3d-native:latest.integration'
+    compile 'com.amap.api:map3d:latest.integration'
 }

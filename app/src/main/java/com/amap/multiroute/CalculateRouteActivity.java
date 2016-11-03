@@ -54,7 +54,7 @@ public class CalculateRouteActivity extends Activity implements AMapNaviListener
 
     private MapView mMapView;
     private AMap mAMap;
-    private NaviLatLng endLatlng = new NaviLatLng(39.90759,116.392582); //116.383181,39.942046（后海公园） //116.481344,39.99017(方恒国际)//116.346233,40.05964(西三旗)
+    private NaviLatLng endLatlng = new NaviLatLng(39.90759,116.392582);
     private NaviLatLng startLatlng = new NaviLatLng(39.993537, 116.472875);
     private List<NaviLatLng> startList = new ArrayList<NaviLatLng>();
     /**

@@ -27,7 +27,7 @@
         android:theme="@style/AppTheme">
         <meta-data
             android:name="com.amap.api.v2.apikey"
-            android:value="e73e4b7883ed983e1d9a07a451d895c3" />
+            android:value="高德开放平台android key" />
 
         <activity android:name="com.amap.multiroute.CalculateRouteActivity">
             <intent-filter>
