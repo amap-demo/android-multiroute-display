@@ -48,8 +48,8 @@
 ```
 - CalculateRouteActivity 设置导航起终点
 ```java
- private NaviLatLng endLatlng = new NaviLatLng(39.90759,116.392582); 
- private NaviLatLng startLatlng = new NaviLatLng(39.993537, 116.472875);
+ private NaviLatLng endLatlng; //导航终点
+ private NaviLatLng startLatlng; //导航起点
 ```
 - CalculateRouteActivity 选择模拟\真实导航
 ```java
