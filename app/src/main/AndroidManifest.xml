@@ -27,17 +27,23 @@
         android:theme="@style/AppTheme">
         <meta-data
             android:name="com.amap.api.v2.apikey"
-            android:value="高德开放平台android key" />
+            android:value="您的key" />
 
-        <activity android:name="com.amap.multiroute.CalculateRouteActivity">
+        <activity
+            android:name="com.amap.multiroute.CalculateRouteActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.amap.multiroute.RouteNaviActivity" />
-        <activity android:name="com.amap.multiroute.StrategyChooseActivity"></activity>
+        <activity
+            android:name="com.amap.multiroute.RouteNaviActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.amap.multiroute.StrategyChooseActivity"
+            android:screenOrientation="portrait"></activity>
     </application>
 
 </manifest>
