@@ -17,14 +17,16 @@ import com.amap.api.maps.CameraUpdateFactory;
 import com.amap.api.maps.MapView;
 import com.amap.api.maps.UiSettings;
 import com.amap.api.navi.AMapNavi;
+import com.amap.api.navi.AMapNaviException;
 import com.amap.api.navi.AMapNaviListener;
 import com.amap.api.navi.model.AMapLaneInfo;
+import com.amap.api.navi.model.AMapNaviCameraInfo;
 import com.amap.api.navi.model.AMapNaviCross;
 import com.amap.api.navi.model.AMapNaviInfo;
 import com.amap.api.navi.model.AMapNaviLocation;
 import com.amap.api.navi.model.AMapNaviPath;
-import com.amap.api.navi.model.AMapNaviStaticInfo;
 import com.amap.api.navi.model.AMapNaviTrafficFacilityInfo;
+import com.amap.api.navi.model.AMapServiceAreaInfo;
 import com.amap.api.navi.model.AimLessModeCongestionInfo;
 import com.amap.api.navi.model.AimLessModeStat;
 import com.amap.api.navi.model.NaviInfo;
@@ -32,7 +34,6 @@ import com.amap.api.navi.model.NaviLatLng;
 import com.amap.api.navi.view.RouteOverLay;
 import com.amap.multiroute.Bean.StrategyBean;
 import com.amap.multiroute.util.Utils;
-import com.autonavi.tbt.NaviStaticInfo;
 import com.autonavi.tbt.TrafficFacilityInfo;
 
 import java.util.ArrayList;
@@ -84,14 +85,16 @@ public class CalculateRouteActivity extends Activity implements AMapNaviListener
     private TextView mCalculateRouteOverView;
     private ImageView mImageTraffic, mImageStrategy;
 
+    private int routeID = -1;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calculate_route);
         mMapView = (MapView) findViewById(R.id.navi_view);
         mMapView.onCreate(savedInstanceState);// 此方法必须重写
-        init();
         initView();
+        init();
         initNavi();
     }
 
@@ -150,6 +153,7 @@ public class CalculateRouteActivity extends Activity implements AMapNaviListener
             }
         }
         setRouteLineTag(paths, ints);
+        mAMap.setMapType(AMap.MAP_TYPE_NAVI);
     }
 
     /**
@@ -229,7 +233,8 @@ public class CalculateRouteActivity extends Activity implements AMapNaviListener
     private void init() {
         if (mAMap == null) {
             mAMap = mMapView.getMap();
-            mAMap.setTrafficEnabled(true);
+            mAMap.setTrafficEnabled(false);
+            mImageTraffic.setImageResource(R.drawable.map_traffic_white);
             UiSettings uiSettings = mAMap.getUiSettings();
             uiSettings.setZoomControlsEnabled(false);
         }
@@ -244,6 +249,11 @@ public class CalculateRouteActivity extends Activity implements AMapNaviListener
     private void drawRoutes(int routeId, AMapNaviPath path) {
         mAMap.moveCamera(CameraUpdateFactory.changeTilt(0));
         RouteOverLay routeOverLay = new RouteOverLay(mAMap, path, this);
+        try {
+            routeOverLay.setWidth(60f);
+        } catch (AMapNaviException e) {
+            e.printStackTrace();
+        }
         routeOverLay.setTrafficLine(true);
         routeOverLay.addToMap();
         routeOverlays.put(routeId, routeOverLay);
@@ -254,9 +264,12 @@ public class CalculateRouteActivity extends Activity implements AMapNaviListener
      * 开始导航
      */
     private void startNavi() {
-        Intent gpsintent = new Intent(getApplicationContext(), RouteNaviActivity.class);
-        gpsintent.putExtra("gps", false); // gps 为true为真实导航，为false为模拟导航
-        startActivity(gpsintent);
+        if (routeID != -1){
+            mAMapNavi.selectRouteId(routeID);
+            Intent gpsintent = new Intent(getApplicationContext(), RouteNaviActivity.class);
+            gpsintent.putExtra("gps", false); // gps 为true为真实导航，为false为模拟导航
+            startActivity(gpsintent);
+        }
     }
 
     /**
@@ -318,7 +331,7 @@ public class CalculateRouteActivity extends Activity implements AMapNaviListener
             return;
         }
         int indexOne = 0;
-        String stragegyTagOne = Utils.getStrategyDes(paths, ints, indexOne, mStrategyBean);
+        String stragegyTagOne = paths.get(ints[indexOne]).getLabels();
         setLinelayoutOneContent(ints[indexOne], stragegyTagOne);
         if (ints.length == 1) {
             visiableRouteLine(true, false, false);
@@ -327,7 +340,7 @@ public class CalculateRouteActivity extends Activity implements AMapNaviListener
         }
 
         int indexTwo = 1;
-        String stragegyTagTwo = Utils.getStrategyDes(paths, ints, indexTwo, mStrategyBean);
+        String stragegyTagTwo = paths.get(ints[indexTwo]).getLabels();
         setLinelayoutTwoContent(ints[indexTwo], stragegyTagTwo);
         if (ints.length == 2) {
             visiableRouteLine(true, true, false);
@@ -336,7 +349,7 @@ public class CalculateRouteActivity extends Activity implements AMapNaviListener
         }
 
         int indexThree = 2;
-        String stragegyTagThree = Utils.getStrategyDes(paths, ints, indexThree, mStrategyBean);
+        String stragegyTagThree = paths.get(ints[indexThree]).getLabels();
         setLinelayoutThreeContent(ints[indexThree], stragegyTagThree);
         if (ints.length >= 3) {
             visiableRouteLine(true, true, true);
@@ -437,7 +450,7 @@ public class CalculateRouteActivity extends Activity implements AMapNaviListener
             return;
         }
         try {
-            int routeID = (int) mRouteLineLayoutOne.getTag();
+            routeID = (int) mRouteLineLayoutOne.getTag();
             RouteOverLay overlay = routeOverlays.get(routeID);
             if (focus) {
                 mCalculateRouteOverView.setText(Utils.getRouteOverView(overlay.getAMapNaviPath()));
@@ -469,7 +482,7 @@ public class CalculateRouteActivity extends Activity implements AMapNaviListener
             return;
         }
         try {
-            int routeID = (int) mRouteLinelayoutTwo.getTag();
+            routeID = (int) mRouteLinelayoutTwo.getTag();
             RouteOverLay overlay = routeOverlays.get(routeID);
             if (focus) {
                 mCalculateRouteOverView.setText(Utils.getRouteOverView(overlay.getAMapNaviPath()));
@@ -501,7 +514,7 @@ public class CalculateRouteActivity extends Activity implements AMapNaviListener
             return;
         }
         try {
-            int routeID = (int) mRouteLineLayoutThree.getTag();
+            routeID = (int) mRouteLineLayoutThree.getTag();
             RouteOverLay overlay = routeOverlays.get(routeID);
             if (overlay == null) {
                 return;
@@ -615,16 +628,6 @@ public class CalculateRouteActivity extends Activity implements AMapNaviListener
     }
 
     @Override
-    public void onArriveDestination(NaviStaticInfo naviStaticInfo) {
-
-    }
-
-    @Override
-    public void onArriveDestination(AMapNaviStaticInfo aMapNaviStaticInfo) {
-
-    }
-
-    @Override
     public void onCalculateRouteFailure(int i) {
         Toast.makeText(this.getApplicationContext(),"错误码"+i,Toast.LENGTH_LONG).show();
     }
@@ -651,6 +654,16 @@ public class CalculateRouteActivity extends Activity implements AMapNaviListener
 
     @Override
     public void onNaviInfoUpdated(AMapNaviInfo aMapNaviInfo) {
+
+    }
+
+    @Override
+    public void updateCameraInfo(AMapNaviCameraInfo[] aMapNaviCameraInfos) {
+
+    }
+
+    @Override
+    public void onServiceAreaUpdate(AMapServiceAreaInfo[] aMapServiceAreaInfos) {
 
     }
 
@@ -706,6 +719,11 @@ public class CalculateRouteActivity extends Activity implements AMapNaviListener
 
     @Override
     public void updateAimlessModeCongestionInfo(AimLessModeCongestionInfo aimLessModeCongestionInfo) {
+
+    }
+
+    @Override
+    public void onPlayRing(int i) {
 
     }
 }
