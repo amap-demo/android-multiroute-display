@@ -30,14 +30,6 @@ android {
             jniLibs.srcDirs = ['libs']
         }
     }
-//    signingConfigs {
-//        debug {
-//            storeFile file('/Users/ligen/amap/debugkeystore/auto_testcase_keystore/autodebug.keystore')
-//            storePassword 'android'
-//            keyAlias 'androiddebugkey'
-//            keyPassword 'android'
-//        }
-//    }
 }
 
 dependencies {
