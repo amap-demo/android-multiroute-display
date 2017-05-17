@@ -43,7 +43,7 @@ import java.util.List;
 /**
  * 驾车路径规划并展示对应的路线标签
  */
-public class CalculateRouteActivity extends Activity implements AMapNaviListener, View.OnClickListener {
+public class CalculateRouteActivity extends Activity implements AMapNaviListener, View.OnClickListener, AMap.OnMapLoadedListener {
     private StrategyBean mStrategyBean;
     private static final float ROUTE_UNSELECTED_TRANSPARENCY = 0.3F;
     private static final float ROUTE_SELECTED_TRANSPARENCY = 1F;
@@ -188,7 +188,7 @@ public class CalculateRouteActivity extends Activity implements AMapNaviListener
         endList.add(endLatlng);
         mAMapNavi = AMapNavi.getInstance(getApplicationContext());
         mAMapNavi.addAMapNaviListener(this);
-        calculateDriveRoute();
+
     }
 
     private void initView() {
@@ -234,6 +234,7 @@ public class CalculateRouteActivity extends Activity implements AMapNaviListener
         if (mAMap == null) {
             mAMap = mMapView.getMap();
             mAMap.setTrafficEnabled(false);
+            mAMap.setOnMapLoadedListener(this);
             mImageTraffic.setImageResource(R.drawable.map_traffic_white);
             UiSettings uiSettings = mAMap.getUiSettings();
             uiSettings.setZoomControlsEnabled(false);
@@ -725,5 +726,10 @@ public class CalculateRouteActivity extends Activity implements AMapNaviListener
     @Override
     public void onPlayRing(int i) {
 
+    }
+
+    @Override
+    public void onMapLoaded() {
+        calculateDriveRoute();
     }
 }
