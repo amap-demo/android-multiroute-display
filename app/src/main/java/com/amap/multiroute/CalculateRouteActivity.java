@@ -451,9 +451,9 @@ public class CalculateRouteActivity extends Activity implements AMapNaviListener
             return;
         }
         try {
-            routeID = (int) mRouteLineLayoutOne.getTag();
-            RouteOverLay overlay = routeOverlays.get(routeID);
+            RouteOverLay overlay = routeOverlays.get((int)mRouteLineLayoutOne.getTag());
             if (focus) {
+                routeID = (int) mRouteLineLayoutOne.getTag();
                 mCalculateRouteOverView.setText(Utils.getRouteOverView(overlay.getAMapNaviPath()));
                 mAMapNavi.selectRouteId(routeID);
                 overlay.setTransparency(ROUTE_SELECTED_TRANSPARENCY);
@@ -483,9 +483,9 @@ public class CalculateRouteActivity extends Activity implements AMapNaviListener
             return;
         }
         try {
-            routeID = (int) mRouteLinelayoutTwo.getTag();
-            RouteOverLay overlay = routeOverlays.get(routeID);
+            RouteOverLay overlay = routeOverlays.get((int) mRouteLinelayoutTwo.getTag());
             if (focus) {
+                routeID = (int) mRouteLinelayoutTwo.getTag();
                 mCalculateRouteOverView.setText(Utils.getRouteOverView(overlay.getAMapNaviPath()));
                 mAMapNavi.selectRouteId(routeID);
                 overlay.setTransparency(ROUTE_SELECTED_TRANSPARENCY);
@@ -515,12 +515,12 @@ public class CalculateRouteActivity extends Activity implements AMapNaviListener
             return;
         }
         try {
-            routeID = (int) mRouteLineLayoutThree.getTag();
-            RouteOverLay overlay = routeOverlays.get(routeID);
+            RouteOverLay overlay = routeOverlays.get((int) mRouteLineLayoutThree.getTag());
             if (overlay == null) {
                 return;
             }
             if (focus) {
+                routeID = (int) mRouteLineLayoutThree.getTag();
                 mCalculateRouteOverView.setText(Utils.getRouteOverView(overlay.getAMapNaviPath()));
                 mAMapNavi.selectRouteId(routeID);
                 overlay.setTransparency(ROUTE_SELECTED_TRANSPARENCY);
