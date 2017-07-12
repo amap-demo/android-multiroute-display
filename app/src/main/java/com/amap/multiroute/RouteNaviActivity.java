@@ -122,10 +122,6 @@ public class RouteNaviActivity extends Activity implements AMapNaviListener, AMa
 	}
 
 	@Override
-	public void onCalculateRouteSuccess() {
-	}
-
-	@Override
 	public void onCalculateRouteFailure(int errorInfo) {
 	}
 
@@ -224,7 +220,7 @@ public class RouteNaviActivity extends Activity implements AMapNaviListener, AMa
 	}
 
 	@Override
-	public void onCalculateMultipleRoutesSuccess(int[] ints) {
+	public void onCalculateRouteSuccess(int[] ints) {
 
 	}
 
