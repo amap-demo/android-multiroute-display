@@ -138,25 +138,6 @@ public class CalculateRouteActivity extends Activity implements AMapNaviListener
     }
 
     /**
-     * 多路径算路成功回调
-     *
-     * @param ints 路线id数组
-     */
-    @Override
-    public void onCalculateMultipleRoutesSuccess(int[] ints) {
-        cleanRouteOverlay();
-        HashMap<Integer, AMapNaviPath> paths = mAMapNavi.getNaviPaths();
-        for (int i = 0; i < ints.length; i++) {
-            AMapNaviPath path = paths.get(ints[i]);
-            if (path != null) {
-                drawRoutes(ints[i], path);
-            }
-        }
-        setRouteLineTag(paths, ints);
-        mAMap.setMapType(AMap.MAP_TYPE_NAVI);
-    }
-
-    /**
      * 接收驾车偏好设置项
      *
      * @param requestCode
@@ -541,15 +522,6 @@ public class CalculateRouteActivity extends Activity implements AMapNaviListener
     }
 
     /**
-     * 单路径算路成功回调
-     */
-
-    @Override
-    public void onCalculateRouteSuccess() {
-
-    }
-
-    /**
      * 方法必须重写
      */
     @Override
@@ -701,6 +673,20 @@ public class CalculateRouteActivity extends Activity implements AMapNaviListener
     @Override
     public void hideLaneInfo() {
 
+    }
+
+    @Override
+    public void onCalculateRouteSuccess(int[] ints) {
+        cleanRouteOverlay();
+        HashMap<Integer, AMapNaviPath> paths = mAMapNavi.getNaviPaths();
+        for (int i = 0; i < ints.length; i++) {
+            AMapNaviPath path = paths.get(ints[i]);
+            if (path != null) {
+                drawRoutes(ints[i], path);
+            }
+        }
+        setRouteLineTag(paths, ints);
+        mAMap.setMapType(AMap.MAP_TYPE_NAVI);
     }
 
     @Override

@@ -209,11 +209,6 @@ public class TTSController implements AMapNaviListener {
     }
 
     @Override
-    public void onCalculateRouteSuccess() {
-
-    }
-
-    @Override
     public void onCalculateRouteFailure(int i) {
 
     }
@@ -289,7 +284,7 @@ public class TTSController implements AMapNaviListener {
     }
 
     @Override
-    public void onCalculateMultipleRoutesSuccess(int[] ints) {
+    public void onCalculateRouteSuccess(int[] ints) {
 
     }
 
