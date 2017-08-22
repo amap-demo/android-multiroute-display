@@ -114,6 +114,11 @@ public class RouteNaviActivity extends Activity implements AMapNaviListener, AMa
 	}
 
 	@Override
+	public void onGetNavigationText(String s) {
+
+	}
+
+	@Override
 	public void onEndEmulatorNavi() {
 	}
 
