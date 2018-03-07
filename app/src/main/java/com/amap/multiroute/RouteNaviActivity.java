@@ -20,7 +20,6 @@ import com.amap.api.navi.model.AMapServiceAreaInfo;
 import com.amap.api.navi.model.AimLessModeCongestionInfo;
 import com.amap.api.navi.model.AimLessModeStat;
 import com.amap.api.navi.model.NaviInfo;
-import com.amap.multiroute.util.TTSController;
 import com.autonavi.tbt.TrafficFacilityInfo;
 
 /**
@@ -30,15 +29,14 @@ public class RouteNaviActivity extends Activity implements AMapNaviListener, AMa
 
 	AMapNaviView mAMapNaviView;
 	AMapNavi mAMapNavi;
-	TTSController mTtsManager;
+
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_basic_navi);
-		mTtsManager = TTSController.getInstance(getApplicationContext());
-		mTtsManager.init();
+
 
 		mAMapNaviView = (AMapNaviView) findViewById(R.id.navi_view);
 		mAMapNaviView.onCreate(savedInstanceState);
@@ -46,7 +44,8 @@ public class RouteNaviActivity extends Activity implements AMapNaviListener, AMa
 
 		mAMapNavi = AMapNavi.getInstance(getApplicationContext());
 		mAMapNavi.addAMapNaviListener(this);
-		mAMapNavi.addAMapNaviListener(mTtsManager);
+		mAMapNavi.setUseInnerVoice(true);
+
 		mAMapNavi.setEmulatorNaviSpeed(60);
 		boolean gps=getIntent().getBooleanExtra("gps", false);
 		if(gps){
@@ -68,8 +67,7 @@ public class RouteNaviActivity extends Activity implements AMapNaviListener, AMa
 	protected void onPause() {
 		super.onPause();
 		mAMapNaviView.onPause();
-		//        仅仅是停止你当前在说的这句话，一会到新的路口还是会再说的
-		mTtsManager.stopSpeaking();
+
 		//
 		//        停止导航之后，会触及底层stop，然后就不会再有回调了，但是讯飞当前还是没有说完的半句话还是会说完
 		//        mAMapNavi.stopNavi();
@@ -81,8 +79,7 @@ public class RouteNaviActivity extends Activity implements AMapNaviListener, AMa
 		mAMapNaviView.onDestroy();
 		mAMapNavi.stopNavi();
 //		mAMapNavi.destroy();
-		mAMapNavi.removeAMapNaviListener(mTtsManager);
-		mTtsManager.destroy();
+
 	}
 
 	@Override
